@@ -19,7 +19,7 @@ void defineAST(String outputDir, String baseName, List<String> types) {
     String path = outputDir + "/" + baseName + ".dart";
     var writer = new File(path).openWrite();
 
-    writer.writeln("import 'token.dart';");
+    writer.writeln("import 'Token.dart';");
     writer.writeln("");
     writer.writeln("abstract class " + baseName + " {}\n");
 

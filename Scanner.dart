@@ -1,5 +1,5 @@
-import 'lox.dart';
-import 'token.dart';
+import 'Lox.dart';
+import 'Token.dart';
 
 class Scanner {
 	String source = "";

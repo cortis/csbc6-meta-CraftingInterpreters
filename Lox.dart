@@ -1,6 +1,6 @@
 import 'dart:io';
-import 'scanner.dart';
-import 'token.dart';
+import 'Scanner.dart';
+import 'Token.dart';
 
 void main(List<String> args) {
 	Lox lox = Lox();
