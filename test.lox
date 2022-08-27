@@ -1,0 +1,10 @@
+var test = 5;
+test = test + 6.2;
+print test; // we live in a beautiful world
+
+if (test > 5 and test < 10) {
+  test = test + 1.345;
+}
+
+var test2 = "this is a test";
+
