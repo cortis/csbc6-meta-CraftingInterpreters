@@ -8,8 +8,8 @@
             "name": "GenerateAST",
             "type": "dart",
             "request": "launch",
-            "program": "generateAST.dart",
-            "args": ["loxAST"],
+            "program": "tools/generateAST.dart",
+            "args": ["."],
         },
         {
             "name": "Lox",
