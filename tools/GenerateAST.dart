@@ -21,7 +21,15 @@ void defineAST(String outputDir, String baseName, List<String> types) {
 
     writer.writeln("import 'Token.dart';");
     writer.writeln("");
-    writer.writeln("abstract class " + baseName + " {}\n");
+
+    defineVisitor(writer, baseName, types);
+
+    writer.writeln("abstract class " + baseName + " {");
+
+    // The base accept() method.
+    writer.writeln(indentString(1) + "Expr accept(Visitor<Expr> visitor);");
+
+    writer.writeln("}\n");
 
     // The AST classes.
     for (String type in types) {
@@ -32,6 +40,18 @@ void defineAST(String outputDir, String baseName, List<String> types) {
 
     writer.close();
 }
+
+  void defineVisitor(IOSink writer, String baseName, List<String> types) {
+    writer.writeln("abstract class Visitor<TYPE_NAME> {");
+
+    for (String type in types) {
+      String typeName = type.split(":")[0].trim();
+      writer.writeln(indentString(1) + "TYPE_NAME visit" + typeName + baseName + "(" +
+        typeName + " " + baseName.toLowerCase() + ");");
+    }
+
+    writer.writeln("}\n");
+  }
 
 void defineType(IOSink writer, String baseName, String className, String fieldList) {
     writer.writeln("class " + className + " extends " + baseName + " {");
@@ -49,7 +69,13 @@ void defineType(IOSink writer, String baseName, String className, String fieldLi
       writer.writeln(indentString(2) + "this." + name + " = " + name + optionalComma);
     }
 
-    writer.writeln("  {}");
+    writer.writeln(indentString(1) + "{}");
+
+    // Visitor pattern.
+    writer.writeln();
+    writer.writeln(indentString(1) + "Expr accept(Visitor<Expr> visitor) {");
+    writer.writeln(indentString(2) + "return visitor.visit" + className + baseName + "(this);");
+    writer.writeln(indentString(1) + "}");
 
     // Fields.
     writer.writeln();
