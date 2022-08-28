@@ -7,18 +7,18 @@ abstract class Visitor<TYPE_NAME> {
   TYPE_NAME visitUnaryExpr(Unary expr);
 }
 
-abstract class Expr {
-  Expr accept(Visitor<Expr> visitor);
+abstract class Expr<TYPE_NAME> {
+  TYPE_NAME accept(Visitor<TYPE_NAME> visitor);
 }
 
-class Binary extends Expr {
+class Binary<TYPE_NAME> extends Expr<TYPE_NAME> {
   Binary(Expr left, Token operator, Expr right) : 
     this.left = left,
     this.operator = operator,
     this.right = right
   {}
 
-  Expr accept(Visitor<Expr> visitor) {
+  TYPE_NAME accept(Visitor<TYPE_NAME> visitor) {
     return visitor.visitBinaryExpr(this);
   }
 
@@ -27,37 +27,37 @@ class Binary extends Expr {
   Expr right;
 }
 
-class Grouping extends Expr {
+class Grouping<TYPE_NAME> extends Expr<TYPE_NAME> {
   Grouping(Expr expression) : 
     this.expression = expression
   {}
 
-  Expr accept(Visitor<Expr> visitor) {
+  TYPE_NAME accept(Visitor<TYPE_NAME> visitor) {
     return visitor.visitGroupingExpr(this);
   }
 
   Expr expression;
 }
 
-class Literal extends Expr {
-  Literal(Object value) : 
+class Literal<TYPE_NAME> extends Expr<TYPE_NAME> {
+  Literal(Object? value) : 
     this.value = value
   {}
 
-  Expr accept(Visitor<Expr> visitor) {
+  TYPE_NAME accept(Visitor<TYPE_NAME> visitor) {
     return visitor.visitLiteralExpr(this);
   }
 
-  Object value;
+  Object? value;
 }
 
-class Unary extends Expr {
+class Unary<TYPE_NAME> extends Expr<TYPE_NAME> {
   Unary(Token operator, Expr right) : 
     this.operator = operator,
     this.right = right
   {}
 
-  Expr accept(Visitor<Expr> visitor) {
+  TYPE_NAME accept(Visitor<TYPE_NAME> visitor) {
     return visitor.visitUnaryExpr(this);
   }
 

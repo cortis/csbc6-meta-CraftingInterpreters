@@ -10,7 +10,7 @@ void main(List<String> args) {
     defineAST(outputDir, "Expr", [
         "Binary   : Expr left, Token operator, Expr right",
         "Grouping : Expr expression",
-        "Literal  : Object value",
+        "Literal  : Object? value",
         "Unary    : Token operator, Expr right"
     ]);
 }
@@ -24,10 +24,10 @@ void defineAST(String outputDir, String baseName, List<String> types) {
 
     defineVisitor(writer, baseName, types);
 
-    writer.writeln("abstract class " + baseName + " {");
+    writer.writeln("abstract class " + baseName + "<TYPE_NAME> {");
 
     // The base accept() method.
-    writer.writeln(indentString(1) + "Expr accept(Visitor<Expr> visitor);");
+    writer.writeln(indentString(1) + "TYPE_NAME accept(Visitor<TYPE_NAME> visitor);");
 
     writer.writeln("}\n");
 
@@ -54,7 +54,7 @@ void defineAST(String outputDir, String baseName, List<String> types) {
   }
 
 void defineType(IOSink writer, String baseName, String className, String fieldList) {
-    writer.writeln("class " + className + " extends " + baseName + " {");
+    writer.writeln("class " + className + "<TYPE_NAME> extends " + baseName + "<TYPE_NAME> {");
 
     // Constructor.
     writer.writeln(indentString(1) + className + "(" + fieldList + ") : ");
@@ -73,7 +73,7 @@ void defineType(IOSink writer, String baseName, String className, String fieldLi
 
     // Visitor pattern.
     writer.writeln();
-    writer.writeln(indentString(1) + "Expr accept(Visitor<Expr> visitor) {");
+    writer.writeln(indentString(1) + "TYPE_NAME accept(Visitor<TYPE_NAME> visitor) {");
     writer.writeln(indentString(2) + "return visitor.visit" + className + baseName + "(this);");
     writer.writeln(indentString(1) + "}");
 
