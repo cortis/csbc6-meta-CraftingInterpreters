@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'ASTPrinter.dart';
 import 'Expr.dart';
+import 'Interpreter.dart';
 import 'Parser.dart';
 import 'Scanner.dart';
 import 'Token.dart';
@@ -20,6 +21,7 @@ void main(List<String> args) {
 }
 
 class Lox {
+  static Interpreter interpreter = new Interpreter();
 	static bool hadError = false;
 
 	void runFile(String path) {
@@ -50,7 +52,7 @@ class Lox {
     if (hadError) return;
 
     if (expression != null) {
-      print(new ASTPrinter().print(expression));
+      interpreter.interpret(expression);
     }
 	}
 
