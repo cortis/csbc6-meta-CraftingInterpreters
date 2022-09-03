@@ -124,7 +124,7 @@ class Scanner {
 	}
 
 	String peek() {
-		if (isAtEnd()) return '\0';
+		if (isAtEnd()) return '\n';
 		return source[current];
 	}
 
