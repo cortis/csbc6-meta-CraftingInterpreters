@@ -7,19 +7,27 @@ void main(List<String> args) {
 	}
 
     String outputDir = args[0];
-    defineAST(outputDir, "Expr", [
-        "Binary   : Expr left, Token operator, Expr right",
-        "Grouping : Expr expression",
-        "Literal  : Object? value",
-        "Unary    : Token operator, Expr right"
+    defineAST(outputDir, "Expr", ["Token"], [
+      "Binary   : Expr left, Token operator, Expr right",
+      "Grouping : Expr expression",
+      "Literal  : Object? value",
+      "Unary    : Token operator, Expr right"
+    ]);
+
+    defineAST(outputDir, "Stmt", ["Expr"], [
+      "Expression : Expr expression", 
+      "Print      : Expr expression"
     ]);
 }
 
-void defineAST(String outputDir, String baseName, List<String> types) {
+void defineAST(String outputDir, String baseName, List<String> libraries,
+    List<String> types) {
     String path = outputDir + "/" + baseName + ".dart";
     var writer = new File(path).openWrite();
 
-    writer.writeln("import 'Token.dart';");
+    for (String library in libraries) {
+      writer.writeln("import '" + library + ".dart';");
+    }
     writer.writeln("");
 
     defineVisitor(writer, baseName, types);
