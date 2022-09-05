@@ -4,6 +4,7 @@ import 'ASTPrinter.dart';
 import 'Expr.dart';
 import 'Interpreter.dart';
 import 'Parser.dart';
+import 'RuntimeError.dart';
 import 'Scanner.dart';
 import 'Token.dart';
 
@@ -23,6 +24,7 @@ void main(List<String> args) {
 class Lox {
   static Interpreter interpreter = new Interpreter();
 	static bool hadError = false;
+  static bool hadRuntimeError = false;
 
 	void runFile(String path) {
 		File(path).readAsString().then((String contents) {
@@ -71,5 +73,10 @@ class Lox {
     } else {
       report(token.line, " at '" + token.lexeme + "'", message);
     }
+  }
+
+  static void runtimeError(RuntimeError error) {
+    print(error.message + "\n[line " + error.token.line.toString() + "]");
+    hadRuntimeError = true;
   }
 }

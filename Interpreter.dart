@@ -1,4 +1,6 @@
 import 'Expr.dart';
+import 'Lox.dart';
+import 'RuntimeError.dart';
 import 'Token.dart';
 
 class Interpreter implements Visitor<Object> {
@@ -8,7 +10,9 @@ class Interpreter implements Visitor<Object> {
       Object value = evaluate(expr);
       print(stringify(value));
     } catch (error) {
-      print("runtime error");
+      if (error is RuntimeError) {
+        Lox.runtimeError(error);
+      }
     }
   }
 
@@ -51,6 +55,11 @@ class Interpreter implements Visitor<Object> {
     return 0.0;
   }
 
+  void checkNumberOperand(Token operator, Object operand) {
+    if (operand is double) return;
+    throw new RuntimeError(operator, "Operand must be a number");
+  }
+
   @override
   Object visitGroupingExpr(Grouping expr) {
     return evaluate(expr.expression);
@@ -69,6 +78,7 @@ class Interpreter implements Visitor<Object> {
       case TokenType.BANG:
         return !isTruthy(right);
       case TokenType.MINUS:
+        checkNumberOperand(expr.operator, right);
         return -(right as double);
       default:
         break;
