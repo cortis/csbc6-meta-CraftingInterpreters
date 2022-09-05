@@ -27,14 +27,19 @@ class Interpreter implements Visitor<Object> {
       case TokenType.EQUAL_EQUAL:
         return isEqual(left, right);
       case TokenType.GREATER:
+        checkNumberOperands(expr.operator, left, right);
         return (left as double) > (right as double);
       case TokenType.GREATER_EQUAL:
+        checkNumberOperands(expr.operator, left, right);
         return (left as double) >= (right as double);
       case TokenType.LESS:
+        checkNumberOperands(expr.operator, left, right);
         return (left as double) < (right as double);
       case TokenType.LESS_EQUAL:
+        checkNumberOperands(expr.operator, left, right);
         return (left as double) <= (right as double);
       case TokenType.MINUS:
+        checkNumberOperands(expr.operator, left, right);
         return (left as double) - (right as double);
       case TokenType.PLUS:
         if ((left is double) && (right is double)) {
@@ -43,10 +48,15 @@ class Interpreter implements Visitor<Object> {
         if ((left is String) && (right is String)) {
           return (left + right);
         }
+
+        throw new RuntimeError(
+            expr.operator, "Operands must be two numbers or two strings.");
         break;
       case TokenType.SLASH:
+        checkNumberOperands(expr.operator, left, right);
         return (left as double) / (right as double);
       case TokenType.STAR:
+        checkNumberOperands(expr.operator, left, right);
         return (left as double) * (right as double);
       default:
     }
@@ -58,6 +68,11 @@ class Interpreter implements Visitor<Object> {
   void checkNumberOperand(Token operator, Object operand) {
     if (operand is double) return;
     throw new RuntimeError(operator, "Operand must be a number");
+  }
+
+  void checkNumberOperands(Token operator, Object left, Object right) {
+    if (left is double && right is double) return;
+    throw new RuntimeError(operator, "Operands must be numbers");
   }
 
   @override
