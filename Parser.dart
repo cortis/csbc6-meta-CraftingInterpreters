@@ -2,6 +2,7 @@
 
 import "Expr.dart";
 import "Lox.dart";
+import "Stmt.dart";
 import "Token.dart";
 
 class Parser {
@@ -12,16 +13,35 @@ class Parser {
     this.tokens = tokens
     {}
 
-  Expr? parse() {
-    try {
-      return expression();
-    } catch (error) {
-      return null;
+  List<Stmt> parse() {
+    List<Stmt> statements = [];
+    while (!isAtEnd()) {
+      statements.add(statement());
     }
+
+    return statements;
   }
 
   Expr expression() {
       return equality();
+  }
+
+  Stmt statement() {
+    if (match([TokenType.PRINT])) return printStatement();
+
+    return expressionStatement();
+  }
+
+  Stmt printStatement() {
+    Expr value = expression();
+    consume(TokenType.SEMICOLON, "Expect ';' after value.");
+    return new Print(value);
+  }
+
+  Stmt expressionStatement() {
+    Expr expr = expression();
+    consume(TokenType.SEMICOLON, "Expect ';' after expression.");
+    return new Expression(expr);
   }
 
   Expr equality() {

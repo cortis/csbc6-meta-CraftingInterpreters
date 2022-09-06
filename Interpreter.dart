@@ -1,14 +1,16 @@
 import 'Expr.dart';
 import 'Lox.dart';
 import 'RuntimeError.dart';
+import 'Stmt.dart';
 import 'Token.dart';
 
-class Interpreter implements Visitor<Object> {
+class Interpreter implements ExprVisitor<Object>, StmtVisitor<void> {
 
-  void interpret(Expr expr) {
+  void interpret(List<Stmt> statements) {
     try {
-      Object value = evaluate(expr);
-      print(stringify(value));
+      for (Stmt statement in statements) {
+        execute(statement);
+      }
     } catch (error) {
       if (error is RuntimeError) {
         Lox.runtimeError(error);
@@ -105,6 +107,21 @@ class Interpreter implements Visitor<Object> {
 
   Object evaluate(Expr expr) {
     return expr.accept(this);
+  }
+
+  void execute(Stmt stmt) {
+    stmt.accept(this);
+  }
+
+  @override
+  void visitExpressionStmt(Expression stmt) {
+    evaluate(stmt.expression);
+  }
+
+  @override
+  void visitPrintStmt(Print stmt) {
+    Object value = evaluate(stmt.expression);
+    print(value);
   }
 
   bool isTruthy(Object? object) {

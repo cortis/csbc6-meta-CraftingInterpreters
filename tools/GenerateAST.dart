@@ -35,7 +35,7 @@ void defineAST(String outputDir, String baseName, List<String> libraries,
     writer.writeln("abstract class " + baseName + "<TYPE_NAME> {");
 
     // The base accept() method.
-    writer.writeln(indentString(1) + "TYPE_NAME accept(Visitor<TYPE_NAME> visitor);");
+    writer.writeln(indentString(1) + "TYPE_NAME accept(" + visitorName(baseName) + "<TYPE_NAME> visitor);");
 
     writer.writeln("}\n");
 
@@ -49,8 +49,12 @@ void defineAST(String outputDir, String baseName, List<String> libraries,
     writer.close();
 }
 
+  String visitorName(String baseName) {
+    return (baseName + "Visitor");
+  }
+
   void defineVisitor(IOSink writer, String baseName, List<String> types) {
-    writer.writeln("abstract class Visitor<TYPE_NAME> {");
+    writer.writeln("abstract class " + visitorName(baseName) + "<TYPE_NAME> {");
 
     for (String type in types) {
       String typeName = type.split(":")[0].trim();
@@ -81,7 +85,7 @@ void defineType(IOSink writer, String baseName, String className, String fieldLi
 
     // Visitor pattern.
     writer.writeln();
-    writer.writeln(indentString(1) + "TYPE_NAME accept(Visitor<TYPE_NAME> visitor) {");
+    writer.writeln(indentString(1) + "TYPE_NAME accept(" + visitorName(baseName) + "<TYPE_NAME> visitor) {");
     writer.writeln(indentString(2) + "return visitor.visit" + className + baseName + "(this);");
     writer.writeln(indentString(1) + "}");
 

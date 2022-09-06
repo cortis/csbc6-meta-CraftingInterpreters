@@ -1,7 +1,7 @@
 import 'Expr.dart';
 import 'Token.dart';
 
-class ASTPrinter implements Visitor<String> {
+class ASTPrinter implements ExprVisitor<String> {
   String print(Expr expr) {
     return expr.accept(this);
   }

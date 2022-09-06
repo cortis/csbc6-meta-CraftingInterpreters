@@ -1,6 +1,6 @@
 import 'Token.dart';
 
-abstract class Visitor<TYPE_NAME> {
+abstract class ExprVisitor<TYPE_NAME> {
   TYPE_NAME visitBinaryExpr(Binary expr);
   TYPE_NAME visitGroupingExpr(Grouping expr);
   TYPE_NAME visitLiteralExpr(Literal expr);
@@ -8,7 +8,7 @@ abstract class Visitor<TYPE_NAME> {
 }
 
 abstract class Expr<TYPE_NAME> {
-  TYPE_NAME accept(Visitor<TYPE_NAME> visitor);
+  TYPE_NAME accept(ExprVisitor<TYPE_NAME> visitor);
 }
 
 class Binary<TYPE_NAME> extends Expr<TYPE_NAME> {
@@ -18,7 +18,7 @@ class Binary<TYPE_NAME> extends Expr<TYPE_NAME> {
     this.right = right
   {}
 
-  TYPE_NAME accept(Visitor<TYPE_NAME> visitor) {
+  TYPE_NAME accept(ExprVisitor<TYPE_NAME> visitor) {
     return visitor.visitBinaryExpr(this);
   }
 
@@ -32,7 +32,7 @@ class Grouping<TYPE_NAME> extends Expr<TYPE_NAME> {
     this.expression = expression
   {}
 
-  TYPE_NAME accept(Visitor<TYPE_NAME> visitor) {
+  TYPE_NAME accept(ExprVisitor<TYPE_NAME> visitor) {
     return visitor.visitGroupingExpr(this);
   }
 
@@ -44,7 +44,7 @@ class Literal<TYPE_NAME> extends Expr<TYPE_NAME> {
     this.value = value
   {}
 
-  TYPE_NAME accept(Visitor<TYPE_NAME> visitor) {
+  TYPE_NAME accept(ExprVisitor<TYPE_NAME> visitor) {
     return visitor.visitLiteralExpr(this);
   }
 
@@ -57,7 +57,7 @@ class Unary<TYPE_NAME> extends Expr<TYPE_NAME> {
     this.right = right
   {}
 
-  TYPE_NAME accept(Visitor<TYPE_NAME> visitor) {
+  TYPE_NAME accept(ExprVisitor<TYPE_NAME> visitor) {
     return visitor.visitUnaryExpr(this);
   }
 
