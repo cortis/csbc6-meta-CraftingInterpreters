@@ -5,6 +5,7 @@ abstract class ExprVisitor<TYPE_NAME> {
   TYPE_NAME visitGroupingExpr(Grouping expr);
   TYPE_NAME visitLiteralExpr(Literal expr);
   TYPE_NAME visitUnaryExpr(Unary expr);
+  TYPE_NAME visitVariableExpr(Variable expr);
 }
 
 abstract class Expr<TYPE_NAME> {
@@ -63,5 +64,17 @@ class Unary<TYPE_NAME> extends Expr<TYPE_NAME> {
 
   Token operator;
   Expr right;
+}
+
+class Variable<TYPE_NAME> extends Expr<TYPE_NAME> {
+  Variable(Token name) : 
+    this.name = name
+  {}
+
+  TYPE_NAME accept(ExprVisitor<TYPE_NAME> visitor) {
+    return visitor.visitVariableExpr(this);
+  }
+
+  Token name;
 }
 

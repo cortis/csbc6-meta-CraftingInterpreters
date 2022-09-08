@@ -1,8 +1,10 @@
 import 'Expr.dart';
+import 'Token.dart';
 
 abstract class StmtVisitor<TYPE_NAME> {
   TYPE_NAME visitExpressionStmt(Expression stmt);
   TYPE_NAME visitPrintStmt(Print stmt);
+  TYPE_NAME visitVarStmt(Var stmt);
 }
 
 abstract class Stmt<TYPE_NAME> {
@@ -31,5 +33,19 @@ class Print<TYPE_NAME> extends Stmt<TYPE_NAME> {
   }
 
   Expr expression;
+}
+
+class Var<TYPE_NAME> extends Stmt<TYPE_NAME> {
+  Var(Token name, Expr? initializer) : 
+    this.name = name,
+    this.initializer = initializer
+  {}
+
+  TYPE_NAME accept(StmtVisitor<TYPE_NAME> visitor) {
+    return visitor.visitVarStmt(this);
+  }
+
+  Token name;
+  Expr? initializer;
 }
 

@@ -23,6 +23,12 @@ class ASTPrinter implements ExprVisitor<String> {
     return parenthesize(expr.operator.lexeme, [expr.right]);
   }
 
+  @override
+  String visitVariableExpr(Variable expr) {
+    // TODO: implement visitVariableExpr
+    throw UnimplementedError();
+  }
+
   String parenthesize(String name, List<Expr> exprs) {
     var buffer = new StringBuffer();
 
