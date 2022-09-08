@@ -1,9 +1,7 @@
-// import 'dart:ffi';
-
-import "Expr.dart";
-import "Lox.dart";
-import "Stmt.dart";
-import "Token.dart";
+import 'Expr.dart';
+import 'Lox.dart';
+import 'Stmt.dart';
+import 'Token.dart';
 
 class Parser {
   List<Token> tokens;
@@ -23,7 +21,7 @@ class Parser {
   }
 
   Expr expression() {
-      return equality();
+    return equality();
   }
 
   Stmt statement() {

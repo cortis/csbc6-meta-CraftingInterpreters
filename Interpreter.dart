@@ -52,7 +52,7 @@ class Interpreter implements ExprVisitor<Object>, StmtVisitor<void> {
         }
 
         throw new RuntimeError(
-            expr.operator, "Operands must be two numbers or two strings.");
+          expr.operator, "Operands must be two numbers or two strings.");
         break;
       case TokenType.SLASH:
         checkNumberOperands(expr.operator, left, right);
