@@ -1,3 +1,4 @@
+import 'Environment.dart';
 import 'Expr.dart';
 import 'Lox.dart';
 import 'RuntimeError.dart';
@@ -5,6 +6,7 @@ import 'Stmt.dart';
 import 'Token.dart';
 
 class Interpreter implements ExprVisitor<Object>, StmtVisitor<void> {
+  Environment environment = new Environment();
 
   void interpret(List<Stmt> statements) {
     try {
@@ -52,7 +54,7 @@ class Interpreter implements ExprVisitor<Object>, StmtVisitor<void> {
         }
 
         throw new RuntimeError(
-          expr.operator, "Operands must be two numbers or two strings.");
+            expr.operator, "Operands must be two numbers or two strings.");
         break;
       case TokenType.SLASH:
         checkNumberOperands(expr.operator, left, right);
@@ -155,15 +157,18 @@ class Interpreter implements ExprVisitor<Object>, StmtVisitor<void> {
 
     return object.toString();
   }
-  
-  @override
+
+    @override
   void visitVarStmt(Var stmt) {
-    // TODO: implement visitVarStmt
+    
+    if (stmt.initializer != null) {
+      Object value = evaluate(stmt.initializer);
+      environment.define(stmt.name.lexeme, value);
+    }
   }
-  
+
   @override
   Object visitVariableExpr(Variable expr) {
-    // TODO: implement visitVariableExpr
-    throw UnimplementedError();
+    return environment.get(expr.name);
   }
 }

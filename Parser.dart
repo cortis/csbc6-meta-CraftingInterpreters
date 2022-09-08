@@ -1,5 +1,6 @@
 import 'Expr.dart';
 import 'Lox.dart';
+import 'RuntimeError.dart';
 import 'Stmt.dart';
 import 'Token.dart';
 
@@ -7,9 +8,7 @@ class Parser {
   List<Token> tokens;
   int current = 0;
 
-  Parser(List<Token> tokens) :
-    this.tokens = tokens
-    {}
+  Parser(List<Token> tokens) : this.tokens = tokens {}
 
   List<Stmt> parse() {
     List<Stmt> statements = [];
@@ -55,13 +54,14 @@ class Parser {
   Stmt varDeclaration() {
     Token name = consume(TokenType.IDENTIFIER, "Expect a variable name.");
 
-    Expr? initializer = null;
     if (match([TokenType.EQUAL])) {
-      initializer = expression();
+      Expr initializer = expression();
+
+      consume(TokenType.SEMICOLON, "Expect ';' after variable declaration.");
+      return new Var(name, initializer);
     }
 
-    consume(TokenType.SEMICOLON, "Expect ';' after variable declaration.");
-    return new Var(name, initializer);
+    throw new RuntimeError(name, "All variables must be initialized");
   }
 
   Stmt expressionStatement() {
@@ -85,7 +85,12 @@ class Parser {
   Expr comparison() {
     Expr expr = term();
 
-    while (match([TokenType.GREATER, TokenType.GREATER_EQUAL, TokenType.LESS, TokenType.LESS_EQUAL])) {
+    while (match([
+      TokenType.GREATER,
+      TokenType.GREATER_EQUAL,
+      TokenType.LESS,
+      TokenType.LESS_EQUAL
+    ])) {
       Token operator = previous();
       Expr right = term();
       expr = new Binary(expr, operator, right);

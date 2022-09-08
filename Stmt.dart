@@ -36,7 +36,7 @@ class Print<TYPE_NAME> extends Stmt<TYPE_NAME> {
 }
 
 class Var<TYPE_NAME> extends Stmt<TYPE_NAME> {
-  Var(Token name, Expr? initializer) : 
+  Var(Token name, Expr initializer) : 
     this.name = name,
     this.initializer = initializer
   {}
@@ -46,6 +46,6 @@ class Var<TYPE_NAME> extends Stmt<TYPE_NAME> {
   }
 
   Token name;
-  Expr? initializer;
+  Expr initializer;
 }
 
