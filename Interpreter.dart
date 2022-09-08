@@ -55,7 +55,6 @@ class Interpreter implements ExprVisitor<Object>, StmtVisitor<void> {
 
         throw new RuntimeError(
             expr.operator, "Operands must be two numbers or two strings.");
-        break;
       case TokenType.SLASH:
         checkNumberOperands(expr.operator, left, right);
         return (left as double) / (right as double);
@@ -160,11 +159,8 @@ class Interpreter implements ExprVisitor<Object>, StmtVisitor<void> {
 
     @override
   void visitVarStmt(Var stmt) {
-    
-    if (stmt.initializer != null) {
-      Object value = evaluate(stmt.initializer);
-      environment.define(stmt.name.lexeme, value);
-    }
+    Object value = evaluate(stmt.initializer);
+    environment.define(stmt.name.lexeme, value);
   }
 
   @override
