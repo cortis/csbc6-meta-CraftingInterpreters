@@ -6,7 +6,7 @@ import 'Stmt.dart';
 import 'Token.dart';
 
 class Interpreter implements ExprVisitor<Object>, StmtVisitor<void> {
-  Environment environment = new Environment();
+  Environment environment = new Environment.empty();
 
   void interpret(List<Stmt> statements) {
     try {
@@ -112,6 +112,24 @@ class Interpreter implements ExprVisitor<Object>, StmtVisitor<void> {
 
   void execute(Stmt stmt) {
     stmt.accept(this);
+  }
+
+  void executeBlock(List<Stmt> statements, Environment environment) {
+    Environment previous = this.environment;
+    try {
+      this.environment = environment;
+
+      for (Stmt statement in statements) {
+        execute(statement);
+      }
+    } finally {
+      this.environment = previous;
+    }
+  }
+
+  @override
+  void visitBlockStmt(Block stmt) {
+    executeBlock(stmt.statements, new Environment(environment));
   }
 
   @override

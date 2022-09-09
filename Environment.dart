@@ -4,7 +4,12 @@ import 'RuntimeError.dart';
 import 'Token.dart';
 
 class Environment {
+  final Environment? enclosing;
   final Map<String, Object> values = new HashMap();
+
+  Environment.empty() : enclosing = null {}
+
+  Environment(this.enclosing);
 
   void define(String name, Object value) {
     values[name] = value;
@@ -16,6 +21,10 @@ class Environment {
       return values[name.lexeme] ?? 0;
     }
 
+    if (enclosing != null) {
+      return enclosing!.get(name);
+    }
+
     throw new RuntimeError(name, "Undefined variable '" + name.lexeme + "'.");
   }
 
@@ -23,6 +32,10 @@ class Environment {
     if (values.containsKey(name.lexeme)) {
       values[name.lexeme] = value;
       return;
+    }
+
+    if (enclosing != null) {
+      enclosing!.assign(name, value);
     }
 
     throw new RuntimeError(name, "Undefined variable '" + name.lexeme + "'.");
