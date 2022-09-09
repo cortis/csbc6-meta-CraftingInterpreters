@@ -25,7 +25,7 @@ class Parser {
   }
 
   Expr expression() {
-    return equality();
+    return assignment();
   }
 
   Stmt? declaration() {
@@ -61,13 +61,31 @@ class Parser {
       return new Var(name, initializer);
     }
 
-    throw new RuntimeError(name, "All variables must be initialized");
+    throw new RuntimeError(name, "All variables must be initialized.");
   }
 
   Stmt expressionStatement() {
     Expr expr = expression();
     consume(TokenType.SEMICOLON, "Expect ';' after expression.");
     return new Expression(expr);
+  }
+
+  Expr assignment() {
+    Expr expr = equality();
+
+    if (match([TokenType.EQUAL])) {
+      Token equals = previous();
+      Expr value = assignment();
+
+      if (expr is Variable) {
+        Token name = expr.name;
+        return new Assign(name, value);
+      }
+
+      error(equals, "Invalid assignment target.");
+    }
+
+    return expr;
   }
 
   Expr equality() {

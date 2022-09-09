@@ -157,10 +157,17 @@ class Interpreter implements ExprVisitor<Object>, StmtVisitor<void> {
     return object.toString();
   }
 
-    @override
+  @override
   void visitVarStmt(Var stmt) {
     Object value = evaluate(stmt.initializer);
     environment.define(stmt.name.lexeme, value);
+  }
+
+  @override
+  Object visitAssignExpr(Assign expr) {
+    Object value = evaluate(expr.value);
+    environment.assign(expr.name, value);
+    return value;
   }
 
   @override

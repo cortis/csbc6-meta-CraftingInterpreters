@@ -8,6 +8,7 @@ void main(List<String> args) {
 
   String outputDir = args[0];
   defineAST(outputDir, "Expr", ["Token"], [
+    "Assign   : Token name, Expr value",
     "Binary   : Expr left, Token operator, Expr right",
     "Grouping : Expr expression",
     "Literal  : Object? value",

@@ -1,6 +1,7 @@
 import 'Token.dart';
 
 abstract class ExprVisitor<TYPE_NAME> {
+  TYPE_NAME visitAssignExpr(Assign expr);
   TYPE_NAME visitBinaryExpr(Binary expr);
   TYPE_NAME visitGroupingExpr(Grouping expr);
   TYPE_NAME visitLiteralExpr(Literal expr);
@@ -10,6 +11,20 @@ abstract class ExprVisitor<TYPE_NAME> {
 
 abstract class Expr<TYPE_NAME> {
   TYPE_NAME accept(ExprVisitor<TYPE_NAME> visitor);
+}
+
+class Assign<TYPE_NAME> extends Expr<TYPE_NAME> {
+  Assign(Token name, Expr value) : 
+    this.name = name,
+    this.value = value
+  {}
+
+  TYPE_NAME accept(ExprVisitor<TYPE_NAME> visitor) {
+    return visitor.visitAssignExpr(this);
+  }
+
+  Token name;
+  Expr value;
 }
 
 class Binary<TYPE_NAME> extends Expr<TYPE_NAME> {
