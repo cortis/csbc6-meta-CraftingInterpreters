@@ -4,6 +4,7 @@ import 'Token.dart';
 abstract class StmtVisitor<TYPE_NAME> {
   TYPE_NAME visitBlockStmt(Block stmt);
   TYPE_NAME visitExpressionStmt(Expression stmt);
+  TYPE_NAME visitIfStmt(If stmt);
   TYPE_NAME visitPrintStmt(Print stmt);
   TYPE_NAME visitVarStmt(Var stmt);
 }
@@ -34,6 +35,22 @@ class Expression<TYPE_NAME> extends Stmt<TYPE_NAME> {
   }
 
   Expr expression;
+}
+
+class If<TYPE_NAME> extends Stmt<TYPE_NAME> {
+  If(Expr condition, Stmt thenBranch, Stmt? elseBranch) : 
+    this.condition = condition,
+    this.thenBranch = thenBranch,
+    this.elseBranch = elseBranch
+  {}
+
+  TYPE_NAME accept(StmtVisitor<TYPE_NAME> visitor) {
+    return visitor.visitIfStmt(this);
+  }
+
+  Expr condition;
+  Stmt thenBranch;
+  Stmt? elseBranch;
 }
 
 class Print<TYPE_NAME> extends Stmt<TYPE_NAME> {

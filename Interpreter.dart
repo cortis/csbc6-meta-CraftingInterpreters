@@ -138,6 +138,15 @@ class Interpreter implements ExprVisitor<Object>, StmtVisitor<void> {
   }
 
   @override
+  void visitIfStmt(If stmt) {
+    if (isTruthy(evaluate(stmt.condition))) {
+      execute(stmt.thenBranch);
+    } else if (stmt.elseBranch != null) {
+      execute(stmt.elseBranch!);
+    }
+  }
+
+  @override
   void visitPrintStmt(Print stmt) {
     Object value = evaluate(stmt.expression);
     print(value);

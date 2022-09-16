@@ -41,9 +41,24 @@ class Parser {
 
   Stmt statement() {
     if (match([TokenType.PRINT])) return printStatement();
+    if (match([TokenType.IF])) return ifStatement();
     if (match([TokenType.LEFT_BRACE])) return Block(block());
 
     return expressionStatement();
+  }
+
+  Stmt ifStatement() {
+    consume(TokenType.LEFT_PAREN, "Expect '(' after 'if'.");
+    Expr condition = expression();
+    consume(TokenType.RIGHT_PAREN, "Expect ')' after if condition."); 
+
+    Stmt thenBranch = statement();
+    Stmt? elseBranch = null;
+    if (match([TokenType.ELSE])) {
+      elseBranch = statement();
+    }
+
+    return new If(condition, thenBranch, elseBranch);
   }
 
   Stmt printStatement() {
