@@ -92,12 +92,12 @@ class Parser {
   }
 
   Stmt forStatement() {
-    consume(TokenType.LEFT_PAREN, "Expect '(' after 'while'.");
+    consume(TokenType.LEFT_PAREN, "Expect '(' after 'for'.");
     Stmt? decl = declaration();
     Expr? condition = expression();
     consume(TokenType.SEMICOLON, "Expect ';' after 'for' condition.");
     Expr? finalExpression = expression();
-    consume(TokenType.RIGHT_PAREN, "Expect ')' after condition.");
+    consume(TokenType.RIGHT_PAREN, "Expect ')' after 'for' header.");
     Stmt body = statement();
 
     return new Block([
