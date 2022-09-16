@@ -5,6 +5,7 @@ abstract class ExprVisitor<TYPE_NAME> {
   TYPE_NAME visitBinaryExpr(Binary expr);
   TYPE_NAME visitGroupingExpr(Grouping expr);
   TYPE_NAME visitLiteralExpr(Literal expr);
+  TYPE_NAME visitLogicalExpr(Logical expr);
   TYPE_NAME visitUnaryExpr(Unary expr);
   TYPE_NAME visitVariableExpr(Variable expr);
 }
@@ -65,6 +66,22 @@ class Literal<TYPE_NAME> extends Expr<TYPE_NAME> {
   }
 
   Object? value;
+}
+
+class Logical<TYPE_NAME> extends Expr<TYPE_NAME> {
+  Logical(Expr left, Token operator, Expr right) : 
+    this.left = left,
+    this.operator = operator,
+    this.right = right
+  {}
+
+  TYPE_NAME accept(ExprVisitor<TYPE_NAME> visitor) {
+    return visitor.visitLogicalExpr(this);
+  }
+
+  Expr left;
+  Token operator;
+  Expr right;
 }
 
 class Unary<TYPE_NAME> extends Expr<TYPE_NAME> {

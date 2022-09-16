@@ -35,6 +35,12 @@ class ASTPrinter implements ExprVisitor<String> {
     throw UnimplementedError();
   }
 
+  @override
+  String visitLogicalExpr(Logical expr) {
+    // TODO: implement visitLogicalExpr
+    throw UnimplementedError();
+  }
+
   String parenthesize(String name, List<Expr> exprs) {
     var buffer = new StringBuffer();
 
