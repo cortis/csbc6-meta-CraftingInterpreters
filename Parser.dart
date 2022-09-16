@@ -39,6 +39,10 @@ class Parser {
     }
   }
 
+  Stmt requiredDeclaration() {
+    return declaration() ?? Expression(Literal(0));
+  }
+
   Stmt statement() {
     if (match([TokenType.PRINT])) return printStatement();
     if (match([TokenType.FOR])) return forStatement();
@@ -93,7 +97,7 @@ class Parser {
 
   Stmt forStatement() {
     consume(TokenType.LEFT_PAREN, "Expect '(' after 'for'.");
-    Stmt? decl = declaration();
+    Stmt decl = requiredDeclaration();
     Expr condition = expression();
     consume(TokenType.SEMICOLON, "Expect ';' after 'for' condition.");
     Expr finalExpression = expression();
@@ -101,7 +105,7 @@ class Parser {
     Stmt body = statement();
 
     return new Block([
-      decl!,
+      decl,
       new While(condition, new Block([
         body, 
         new Expression(finalExpression)
