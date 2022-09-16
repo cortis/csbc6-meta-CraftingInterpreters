@@ -17,7 +17,7 @@
             "type": "dart",
             "program": "Lox.dart",
             "console": "debugConsole",
-            "args": ["testSimple.lox"],
+            "args": ["testFib.lox"],
         }
     ]
 }
