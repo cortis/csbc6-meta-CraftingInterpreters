@@ -41,6 +41,7 @@ class Parser {
 
   Stmt statement() {
     if (match([TokenType.PRINT])) return printStatement();
+    if (match([TokenType.FOR])) return forStatement();
     if (match([TokenType.IF])) return ifStatement();
     if (match([TokenType.WHILE])) return whileStatement();
     if (match([TokenType.LEFT_BRACE])) return Block(block());
@@ -88,6 +89,24 @@ class Parser {
     Stmt body = statement();
 
     return new While(condition, body);
+  }
+
+  Stmt forStatement() {
+    consume(TokenType.LEFT_PAREN, "Expect '(' after 'while'.");
+    Stmt? decl = declaration();
+    Expr? condition = expression();
+    consume(TokenType.SEMICOLON, "Expect ';' after 'for' condition.");
+    Expr? finalExpression = expression();
+    consume(TokenType.RIGHT_PAREN, "Expect ')' after condition.");
+    Stmt body = statement();
+
+    return new Block([
+      decl!,
+      new While(condition, new Block([
+        body, 
+        new Expression(finalExpression)
+      ]))
+    ]);
   }
 
   Stmt expressionStatement() {

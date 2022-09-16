@@ -5,3 +5,5 @@ print true or false;
 
 var i = 4;
 while (i > 0) { print i; i = i - 1; }
+
+for (var i = 5; i > 0; i = i - 1) print i;
