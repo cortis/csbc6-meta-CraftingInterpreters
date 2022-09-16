@@ -42,6 +42,7 @@ class Parser {
   Stmt statement() {
     if (match([TokenType.PRINT])) return printStatement();
     if (match([TokenType.IF])) return ifStatement();
+    if (match([TokenType.WHILE])) return whileStatement();
     if (match([TokenType.LEFT_BRACE])) return Block(block());
 
     return expressionStatement();
@@ -78,6 +79,15 @@ class Parser {
     }
 
     throw new RuntimeError(name, "All variables must be initialized.");
+  }
+
+  Stmt whileStatement() {
+    consume(TokenType.LEFT_PAREN, "Expect '(' after 'while'.");
+    Expr condition = expression();
+    consume(TokenType.RIGHT_PAREN, "Expect ')' after condition.");
+    Stmt body = statement();
+
+    return new While(condition, body);
   }
 
   Stmt expressionStatement() {

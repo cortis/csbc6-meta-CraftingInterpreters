@@ -204,6 +204,13 @@ class Interpreter implements ExprVisitor<Object>, StmtVisitor<void> {
   }
 
   @override
+  void visitWhileStmt(While stmt) {
+    while (isTruthy(evaluate(stmt.condition))) {
+      execute(stmt.body);
+    }
+  }
+
+  @override
   Object visitAssignExpr(Assign expr) {
     Object value = evaluate(expr.value);
     environment.assign(expr.name, value);

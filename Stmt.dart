@@ -7,6 +7,7 @@ abstract class StmtVisitor<TYPE_NAME> {
   TYPE_NAME visitIfStmt(If stmt);
   TYPE_NAME visitPrintStmt(Print stmt);
   TYPE_NAME visitVarStmt(Var stmt);
+  TYPE_NAME visitWhileStmt(While stmt);
 }
 
 abstract class Stmt<TYPE_NAME> {
@@ -77,5 +78,19 @@ class Var<TYPE_NAME> extends Stmt<TYPE_NAME> {
 
   Token name;
   Expr initializer;
+}
+
+class While<TYPE_NAME> extends Stmt<TYPE_NAME> {
+  While(Expr condition, Stmt body) : 
+    this.condition = condition,
+    this.body = body
+  {}
+
+  TYPE_NAME accept(StmtVisitor<TYPE_NAME> visitor) {
+    return visitor.visitWhileStmt(this);
+  }
+
+  Expr condition;
+  Stmt body;
 }
 

@@ -2,3 +2,6 @@ print "hi" or 2;
 print nil or "yes";
 print true and false;
 print true or false;
+
+var i = 4;
+while (i > 0) { print i; i = i - 1; }
