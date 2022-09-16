@@ -76,7 +76,7 @@ void defineType(IOSink writer, String baseName, String className, String fieldLi
   writer.writeln("class " + className + "<TYPE_NAME> extends " + baseName + "<TYPE_NAME> {");
 
   // Constructor.
-  writer.writeln(indentString(1) + className + "(" + fieldList + ") : ");
+  writer.write(indentString(1) + className + "(");
 
   // Write field initializers.
   List<String> fields = fieldList.split(", ");
@@ -84,11 +84,11 @@ void defineType(IOSink writer, String baseName, String className, String fieldLi
   for (int i = 0; i < fieldsCount; i++) {
     String field = fields[i];
     String name = field.split(" ")[1];
-    String optionalComma = (i < fieldsCount - 1) ? "," : "";
-    writer.writeln(indentString(2) + "this." + name + " = " + name + optionalComma);
+    String optionalComma = (i < fieldsCount - 1) ? ", " : "";
+    writer.write("this." + name + optionalComma);
   }
 
-  writer.writeln(indentString(1) + "{}");
+  writer.writeln(");");
 
   // Visitor pattern.
   writer.writeln();

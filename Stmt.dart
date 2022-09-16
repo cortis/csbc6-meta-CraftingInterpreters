@@ -15,9 +15,7 @@ abstract class Stmt<TYPE_NAME> {
 }
 
 class Block<TYPE_NAME> extends Stmt<TYPE_NAME> {
-  Block(List<Stmt> statements) : 
-    this.statements = statements
-  {}
+  Block(this.statements);
 
   TYPE_NAME accept(StmtVisitor<TYPE_NAME> visitor) {
     return visitor.visitBlockStmt(this);
@@ -27,9 +25,7 @@ class Block<TYPE_NAME> extends Stmt<TYPE_NAME> {
 }
 
 class Expression<TYPE_NAME> extends Stmt<TYPE_NAME> {
-  Expression(Expr expression) : 
-    this.expression = expression
-  {}
+  Expression(this.expression);
 
   TYPE_NAME accept(StmtVisitor<TYPE_NAME> visitor) {
     return visitor.visitExpressionStmt(this);
@@ -39,11 +35,7 @@ class Expression<TYPE_NAME> extends Stmt<TYPE_NAME> {
 }
 
 class If<TYPE_NAME> extends Stmt<TYPE_NAME> {
-  If(Expr condition, Stmt thenBranch, Stmt? elseBranch) : 
-    this.condition = condition,
-    this.thenBranch = thenBranch,
-    this.elseBranch = elseBranch
-  {}
+  If(this.condition, this.thenBranch, this.elseBranch);
 
   TYPE_NAME accept(StmtVisitor<TYPE_NAME> visitor) {
     return visitor.visitIfStmt(this);
@@ -55,9 +47,7 @@ class If<TYPE_NAME> extends Stmt<TYPE_NAME> {
 }
 
 class Print<TYPE_NAME> extends Stmt<TYPE_NAME> {
-  Print(Expr expression) : 
-    this.expression = expression
-  {}
+  Print(this.expression);
 
   TYPE_NAME accept(StmtVisitor<TYPE_NAME> visitor) {
     return visitor.visitPrintStmt(this);
@@ -67,10 +57,7 @@ class Print<TYPE_NAME> extends Stmt<TYPE_NAME> {
 }
 
 class Var<TYPE_NAME> extends Stmt<TYPE_NAME> {
-  Var(Token name, Expr initializer) : 
-    this.name = name,
-    this.initializer = initializer
-  {}
+  Var(this.name, this.initializer);
 
   TYPE_NAME accept(StmtVisitor<TYPE_NAME> visitor) {
     return visitor.visitVarStmt(this);
@@ -81,10 +68,7 @@ class Var<TYPE_NAME> extends Stmt<TYPE_NAME> {
 }
 
 class While<TYPE_NAME> extends Stmt<TYPE_NAME> {
-  While(Expr condition, Stmt body) : 
-    this.condition = condition,
-    this.body = body
-  {}
+  While(this.condition, this.body);
 
   TYPE_NAME accept(StmtVisitor<TYPE_NAME> visitor) {
     return visitor.visitWhileStmt(this);
