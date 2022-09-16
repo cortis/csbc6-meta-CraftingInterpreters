@@ -94,9 +94,9 @@ class Parser {
   Stmt forStatement() {
     consume(TokenType.LEFT_PAREN, "Expect '(' after 'for'.");
     Stmt? decl = declaration();
-    Expr? condition = expression();
+    Expr condition = expression();
     consume(TokenType.SEMICOLON, "Expect ';' after 'for' condition.");
-    Expr? finalExpression = expression();
+    Expr finalExpression = expression();
     consume(TokenType.RIGHT_PAREN, "Expect ')' after 'for' header.");
     Stmt body = statement();
 
