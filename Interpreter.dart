@@ -1,12 +1,21 @@
+import 'Clock.dart';
 import 'Environment.dart';
 import 'Expr.dart';
 import 'Lox.dart';
+import 'LoxCallable.dart';
 import 'RuntimeError.dart';
 import 'Stmt.dart';
 import 'Token.dart';
 
 class Interpreter implements ExprVisitor<Object>, StmtVisitor<void> {
-  Environment environment = new Environment.empty();
+  Environment globals = new Environment.empty();
+  Environment environment;
+
+  Interpreter() : environment = new Environment.empty() {
+    environment = globals;
+
+    globals.define("clock", new Clock());
+  }
 
   void interpret(List<Stmt> statements) {
     try {
@@ -221,10 +230,32 @@ class Interpreter implements ExprVisitor<Object>, StmtVisitor<void> {
   Object visitVariableExpr(Variable expr) {
     return environment.get(expr.name);
   }
-  
+
   @override
   Object visitCallExpr(Call expr) {
-    // TODO: implement visitCallExpr
-    throw UnimplementedError();
+    Object callee = evaluate(expr.callee);
+
+    List<Object> arguments = [];
+    for (Expr argument in expr.arguments) {
+      arguments.add(evaluate(argument));
+    }
+
+    if (!(callee is LoxCallable)) {
+      throw new RuntimeError(
+          expr.paren, "Can only call functions and classes.");
+    }
+
+    LoxCallable function = callee;
+    if (arguments.length != function.arity()) {
+      throw new RuntimeError(
+          expr.paren,
+          "Expected " +
+              function.arity().toString() +
+              " arguments but got " +
+              arguments.length.toString() +
+              ".");
+    }
+
+    return function.call(this, arguments);
   }
 }
