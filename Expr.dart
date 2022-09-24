@@ -3,6 +3,7 @@ import 'Token.dart';
 abstract class ExprVisitor<TYPE_NAME> {
   TYPE_NAME visitAssignExpr(Assign expr);
   TYPE_NAME visitBinaryExpr(Binary expr);
+  TYPE_NAME visitCallExpr(Call expr);
   TYPE_NAME visitGroupingExpr(Grouping expr);
   TYPE_NAME visitLiteralExpr(Literal expr);
   TYPE_NAME visitLogicalExpr(Logical expr);
@@ -35,6 +36,18 @@ class Binary<TYPE_NAME> extends Expr<TYPE_NAME> {
   Expr left;
   Token operator;
   Expr right;
+}
+
+class Call<TYPE_NAME> extends Expr<TYPE_NAME> {
+  Call(this.callee, this.paren, this.arguments);
+
+  TYPE_NAME accept(ExprVisitor<TYPE_NAME> visitor) {
+    return visitor.visitCallExpr(this);
+  }
+
+  Expr callee;
+  Token paren;
+  List<Expr> arguments;
 }
 
 class Grouping<TYPE_NAME> extends Expr<TYPE_NAME> {

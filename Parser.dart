@@ -235,7 +235,35 @@ class Parser {
       return new Unary(operator, right);
     }
 
-    return primary();
+    return call();
+  }
+
+  Expr call() {
+    Expr expr = primary();
+
+    while (true) {
+      if (match([TokenType.LEFT_PAREN])) {
+        expr = finishCall(expr);
+      } else {
+        break;
+      }
+    }
+
+    return expr;
+  }
+
+  Expr finishCall(Expr callee) {
+    List<Expr> arguments = [];
+
+    if (!check(TokenType.RIGHT_PAREN)) {
+      do {
+        arguments.add(expression());
+      } while (match([TokenType.COMMA]));
+    }
+
+    Token paren = consume(TokenType.RIGHT_PAREN, "Expect ')' after arguments.");
+
+    return new Call(callee, paren, arguments);
   }
 
   Expr primary() {

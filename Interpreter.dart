@@ -221,4 +221,10 @@ class Interpreter implements ExprVisitor<Object>, StmtVisitor<void> {
   Object visitVariableExpr(Variable expr) {
     return environment.get(expr.name);
   }
+  
+  @override
+  Object visitCallExpr(Call expr) {
+    // TODO: implement visitCallExpr
+    throw UnimplementedError();
+  }
 }
