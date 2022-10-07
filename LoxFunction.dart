@@ -1,6 +1,7 @@
 import 'Environment.dart';
 import 'Interpreter.dart';
 import 'LoxCallable.dart';
+import 'ReturnException.dart';
 import 'Stmt.dart';
 
 class LoxFunction implements LoxCallable {
@@ -18,7 +19,13 @@ class LoxFunction implements LoxCallable {
     for (int i = 0; i < declaration.params.length; i++) {
       environment.define(declaration.params[i].lexeme, arguments[i]);
     }
-    interpreter.executeBlock(declaration.body, environment);
+    try {
+      interpreter.executeBlock(declaration.body, environment);
+    } catch (returnValue) {
+      if (returnValue is ReturnException) {
+        return returnValue.value ?? this;
+      }
+    }
     return this;
   }
 

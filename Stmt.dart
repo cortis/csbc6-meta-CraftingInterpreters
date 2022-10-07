@@ -7,6 +7,7 @@ abstract class StmtVisitor<TYPE_NAME> {
   TYPE_NAME visitLFunctionStmt(LFunction stmt);
   TYPE_NAME visitIfStmt(If stmt);
   TYPE_NAME visitPrintStmt(Print stmt);
+  TYPE_NAME visitReturnStmt(Return stmt);
   TYPE_NAME visitVarStmt(Var stmt);
   TYPE_NAME visitWhileStmt(While stmt);
 }
@@ -67,6 +68,17 @@ class Print<TYPE_NAME> extends Stmt<TYPE_NAME> {
   }
 
   Expr expression;
+}
+
+class Return<TYPE_NAME> extends Stmt<TYPE_NAME> {
+  Return(this.keyword, this.value);
+
+  TYPE_NAME accept(StmtVisitor<TYPE_NAME> visitor) {
+    return visitor.visitReturnStmt(this);
+  }
+
+  Token keyword;
+  Expr? value;
 }
 
 class Var<TYPE_NAME> extends Stmt<TYPE_NAME> {

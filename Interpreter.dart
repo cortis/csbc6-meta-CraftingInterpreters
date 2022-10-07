@@ -4,6 +4,7 @@ import 'Expr.dart';
 import 'Lox.dart';
 import 'LoxCallable.dart';
 import 'LoxFunction.dart';
+import 'ReturnException.dart';
 import 'RuntimeError.dart';
 import 'Stmt.dart';
 import 'Token.dart';
@@ -264,5 +265,13 @@ class Interpreter implements ExprVisitor<Object>, StmtVisitor<void> {
   void visitLFunctionStmt(LFunction stmt) {
     LoxFunction function = new LoxFunction(stmt);
     environment.define(stmt.name.lexeme, function);
+  }
+
+  @override
+  void visitReturnStmt(Return stmt) {
+    Object? value = null;
+    if (stmt.value != null) value = evaluate(stmt.value!);
+
+    throw new ReturnException(value);
   }
 }
