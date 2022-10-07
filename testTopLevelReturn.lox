@@ -1,0 +1,11 @@
+print "should get here.";
+
+fun testInnerReturn() {
+  return "inner return";
+}
+
+print testInnerReturn();
+
+return "at top level";
+
+print "shouldn't get here?";

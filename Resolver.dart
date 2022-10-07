@@ -58,6 +58,10 @@ class Resolver implements ExprVisitor<void>, StmtVisitor<void> {
     if (scopes.isEmpty) return;
 
     var scope = scopes.last;
+    if (scope.containsKey(name.lexeme)) {
+      Lox.error(name, "Already a variable with this name in this scope.");
+    }
+
     scope[name.lexeme] = false;
   }
 
