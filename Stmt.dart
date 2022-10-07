@@ -4,6 +4,7 @@ import 'Token.dart';
 abstract class StmtVisitor<TYPE_NAME> {
   TYPE_NAME visitBlockStmt(Block stmt);
   TYPE_NAME visitExpressionStmt(Expression stmt);
+  TYPE_NAME visitLFunctionStmt(LFunction stmt);
   TYPE_NAME visitIfStmt(If stmt);
   TYPE_NAME visitPrintStmt(Print stmt);
   TYPE_NAME visitVarStmt(Var stmt);
@@ -32,6 +33,18 @@ class Expression<TYPE_NAME> extends Stmt<TYPE_NAME> {
   }
 
   Expr expression;
+}
+
+class LFunction<TYPE_NAME> extends Stmt<TYPE_NAME> {
+  LFunction(this.name, this.params, this.body);
+
+  TYPE_NAME accept(StmtVisitor<TYPE_NAME> visitor) {
+    return visitor.visitLFunctionStmt(this);
+  }
+
+  Token name;
+  List<Token> params;
+  List<Stmt> body;
 }
 
 class If<TYPE_NAME> extends Stmt<TYPE_NAME> {

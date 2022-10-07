@@ -30,6 +30,7 @@ class Parser {
 
   Stmt? declaration() {
     try {
+      if (match([TokenType.FUN])) return function("function");
       if (match([TokenType.VAR])) return varDeclaration();
 
       return statement();
@@ -56,7 +57,7 @@ class Parser {
   Stmt ifStatement() {
     consume(TokenType.LEFT_PAREN, "Expect '(' after 'if'.");
     Expr condition = expression();
-    consume(TokenType.RIGHT_PAREN, "Expect ')' after if condition."); 
+    consume(TokenType.RIGHT_PAREN, "Expect ')' after if condition.");
 
     Stmt thenBranch = statement();
     Stmt? elseBranch = null;
@@ -107,7 +108,7 @@ class Parser {
     return new Block([
       decl,
       new While(condition, new Block([
-        body, 
+        body,
         new Expression(finalExpression)
       ]))
     ]);
@@ -117,6 +118,27 @@ class Parser {
     Expr expr = expression();
     consume(TokenType.SEMICOLON, "Expect ';' after expression.");
     return new Expression(expr);
+  }
+
+  LFunction function(String kind) {
+    Token name = consume(TokenType.IDENTIFIER, "Expect " + kind + " name.");
+    consume(TokenType.LEFT_PAREN, "Expect '(' after " + kind + " name.");
+    List<Token> parameters = [];
+    if (!check(TokenType.RIGHT_PAREN)) {
+      do {
+        if (parameters.length >= 255) {
+          error(peek(), "Can't have more than 255 parameters.");
+        }
+
+        parameters.add(
+            consume(TokenType.IDENTIFIER, "Expect parameter name."));
+      } while (match([TokenType.COMMA]));
+    }
+    consume(TokenType.RIGHT_PAREN, "Expect ')' after parameters.");
+
+    consume(TokenType.LEFT_BRACE, "Expect '{' before " + kind + " body.");
+    List<Stmt> body = block();
+    return new LFunction(name, parameters, body);
   }
 
   List<Stmt> block() {

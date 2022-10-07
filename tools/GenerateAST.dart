@@ -21,6 +21,7 @@ void main(List<String> args) {
   defineAST(outputDir, "Stmt", ["Expr", "Token"], [
     "Block      : List<Stmt> statements",
     "Expression : Expr expression",
+    "LFunction  : Token name, List<Token> params, List<Stmt> body",
     "If         : Expr condition, Stmt thenBranch, Stmt? elseBranch",
     "Print      : Expr expression",
     "Var        : Token name, Expr initializer",
