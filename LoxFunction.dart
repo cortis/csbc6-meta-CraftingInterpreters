@@ -6,7 +6,8 @@ import 'Stmt.dart';
 
 class LoxFunction implements LoxCallable {
   LFunction declaration;
-  LoxFunction(this.declaration);
+  Environment closure;
+  LoxFunction(this.declaration, this.closure);
 
   @override
   int arity() {
@@ -15,7 +16,7 @@ class LoxFunction implements LoxCallable {
 
   @override
   Object call(Interpreter interpreter, List<Object> arguments) {
-    Environment environment = new Environment(interpreter.globals);
+    Environment environment = new Environment(closure);
     for (int i = 0; i < declaration.params.length; i++) {
       environment.define(declaration.params[i].lexeme, arguments[i]);
     }
