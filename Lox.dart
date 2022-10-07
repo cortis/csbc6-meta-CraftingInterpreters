@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'Interpreter.dart';
 import 'Parser.dart';
+import 'Resolver.dart';
 import 'RuntimeError.dart';
 import 'Scanner.dart';
 import 'Stmt.dart';
@@ -51,6 +52,9 @@ class Lox {
 
     // Stop if there was a syntax error.
     if (hadError) return;
+
+    var resolver = new Resolver(interpreter);
+    resolver.resolve(statements);
 
     interpreter.interpret(statements);
 	}

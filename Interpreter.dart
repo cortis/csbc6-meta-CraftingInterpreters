@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'Clock.dart';
 import 'Environment.dart';
 import 'Expr.dart';
@@ -11,6 +13,7 @@ import 'Token.dart';
 
 class Interpreter implements ExprVisitor<Object>, StmtVisitor<void> {
   Environment globals = new Environment.empty();
+  Map<Expr, int> locals = new HashMap();
   Environment environment;
 
   Interpreter() : environment = new Environment.empty() {
@@ -138,6 +141,10 @@ class Interpreter implements ExprVisitor<Object>, StmtVisitor<void> {
     stmt.accept(this);
   }
 
+  void resolve(Expr expr, int depth) {
+    locals[expr] = depth;
+  }
+
   void executeBlock(List<Stmt> statements, Environment environment) {
     Environment previous = this.environment;
     try {
@@ -208,6 +215,15 @@ class Interpreter implements ExprVisitor<Object>, StmtVisitor<void> {
     return object.toString();
   }
 
+  Object lookUpVariable(Token name, Expr expr) {
+    int? distance = locals[expr];
+    if (distance != null) {
+      return environment.getAt(distance, name.lexeme);
+    } else {
+      return globals.get(name);
+    }
+  }
+
   @override
   void visitVarStmt(Var stmt) {
     Object value = evaluate(stmt.initializer);
@@ -230,7 +246,7 @@ class Interpreter implements ExprVisitor<Object>, StmtVisitor<void> {
 
   @override
   Object visitVariableExpr(Variable expr) {
-    return environment.get(expr.name);
+    return lookUpVariable(expr.name, expr);
   }
 
   @override

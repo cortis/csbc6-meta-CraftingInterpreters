@@ -1,5 +1,6 @@
 import 'dart:collection';
 
+import 'Resolver.dart';
 import 'RuntimeError.dart';
 import 'Token.dart';
 
@@ -27,6 +28,26 @@ class Environment {
 
     throw new RuntimeError(name, "Undefined variable '" + name.lexeme + "'.");
   }
+
+  Object getAt(int distance, String name) {
+    var result = ancestor(distance).values[name];
+
+    assert(result != null, throw new ResolutionError("Unresolved variable: " + name + " at expected depth: " + distance.toString()));
+
+    return result!;
+  }
+
+  Environment ancestor(int distance) {
+    Environment? environment = this;
+    for (int i = 0; i < distance; i++) {
+      environment = environment?.enclosing;
+    }
+
+    assert(environment != null, throw new ResolutionError("Unresolved environment ancestor at depth: " + distance.toString()));
+
+    return environment!;
+  }
+
 
   void assign(Token name, Object value) {
     if (values.containsKey(name.lexeme)) {
