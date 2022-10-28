@@ -22,3 +22,7 @@ doc/api/
 
 # Don't add Mac .DS_Store files, they are just for the Finder
 .DS_Store
+
+# Xcode stuff to ignore
+*.xcuserstate
+
