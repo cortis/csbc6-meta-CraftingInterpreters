@@ -13,6 +13,8 @@
 		AA25D035290B8C19002B6577 /* debug.c in Sources */ = {isa = PBXBuildFile; fileRef = AA25D034290B8C19002B6577 /* debug.c */; };
 		AA25D038290B8F83002B6577 /* value.c in Sources */ = {isa = PBXBuildFile; fileRef = AA25D037290B8F83002B6577 /* value.c */; };
 		AAD607F62927E9E100B59C8E /* vm.c in Sources */ = {isa = PBXBuildFile; fileRef = AAD607F52927E9E100B59C8E /* vm.c */; };
+		AAD607F92927F66D00B59C8E /* compiler.c in Sources */ = {isa = PBXBuildFile; fileRef = AAD607F82927F66D00B59C8E /* compiler.c */; };
+		AAD607FC2927F6C500B59C8E /* scanner.c in Sources */ = {isa = PBXBuildFile; fileRef = AAD607FB2927F6C500B59C8E /* scanner.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -41,6 +43,10 @@
 		AA25D037290B8F83002B6577 /* value.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = value.c; sourceTree = "<group>"; };
 		AAD607F42927E9E100B59C8E /* vm.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = vm.h; sourceTree = "<group>"; };
 		AAD607F52927E9E100B59C8E /* vm.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = vm.c; sourceTree = "<group>"; };
+		AAD607F72927F66D00B59C8E /* compiler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = compiler.h; sourceTree = "<group>"; };
+		AAD607F82927F66D00B59C8E /* compiler.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = compiler.c; sourceTree = "<group>"; };
+		AAD607FA2927F6C500B59C8E /* scanner.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = scanner.h; sourceTree = "<group>"; };
+		AAD607FB2927F6C500B59C8E /* scanner.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = scanner.c; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -85,6 +91,10 @@
 				AA25D037290B8F83002B6577 /* value.c */,
 				AAD607F42927E9E100B59C8E /* vm.h */,
 				AAD607F52927E9E100B59C8E /* vm.c */,
+				AAD607F72927F66D00B59C8E /* compiler.h */,
+				AAD607F82927F66D00B59C8E /* compiler.c */,
+				AAD607FA2927F6C500B59C8E /* scanner.h */,
+				AAD607FB2927F6C500B59C8E /* scanner.c */,
 			);
 			path = Clox;
 			sourceTree = "<group>";
@@ -150,6 +160,8 @@
 				AA25D02C290B895E002B6577 /* main.c in Sources */,
 				AA25D032290B8B49002B6577 /* memory.c in Sources */,
 				AA25D02F290B8A42002B6577 /* chunk.c in Sources */,
+				AAD607FC2927F6C500B59C8E /* scanner.c in Sources */,
+				AAD607F92927F66D00B59C8E /* compiler.c in Sources */,
 				AAD607F62927E9E100B59C8E /* vm.c in Sources */,
 				AA25D035290B8C19002B6577 /* debug.c in Sources */,
 			);
