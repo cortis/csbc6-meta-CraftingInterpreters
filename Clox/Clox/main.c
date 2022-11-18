@@ -15,7 +15,12 @@ int main(int argc, const char* argv[]) {
 
     writeChunk(&chunk, OP_RETURN, 123);
 
-    disassembleChunk(&chunk, "test chunk");
+    // Cortis: I disabled this line, because it just double traces
+    // the content, but as far as I can tell the book doesn't disable it
+    // Leaving it here for now so that, if needed I can easily bring it back
+    // but will probably delete soon.
+    //    disassembleChunk(&chunk, "test chunk");
+    
     interpret(&chunk);
     freeVM();
     freeChunk(&chunk);
